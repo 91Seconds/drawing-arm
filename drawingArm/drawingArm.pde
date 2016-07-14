@@ -20,8 +20,8 @@ void draw() {
   ellipse(leftShoulderX,leftShoulderY,2*ulnarLength,2*ulnarLength);
   ellipse(rightShoulderX,rightShoulderY,2*ulnarLength,2*ulnarLength);
   
-  float leftUlnarAngle=atan((mouseX-leftShoulderX)/(mouseY-leftShoulderY));
-  float rightUlnarAngle=atan((mouseX-rightShoulderX)/(mouseY-rightShoulderY));
+  float leftUlnarAngle=(float)(mouseX-width/2)/((float)(width));   //atan((mouseX-leftShoulderX)/(mouseY-leftShoulderY));
+  float rightUlnarAngle=(float)(mouseY-height/2)/((float)(height));  //atan((mouseX-rightShoulderX)/(mouseY-rightShoulderY));
   
   //leftElbowX=leftShoulderX+sqrt(pow(ulnarLength,2)/(pow((mouseY-leftShoulderX)/(mouseX-leftShoulderY),2)+1));
   
