@@ -24,7 +24,7 @@ import java.util.Scanner;
  */
 public class XMLer {
     float[] pointsFromXML(String fileName) {
-        float[] points=null;
+        float[] points = null;
         File opened = new File(fileName);
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -38,32 +38,31 @@ public class XMLer {
                     System.out.println(d);
                     String[] pointsets = d.split("[^\\d|.|z\\-\\.]");
                     float[] allPointsInThisPath = new float[pointsets.length];
-                    int jDest=-1;
-                    for(int jSource=0; jSource<pointsets.length; jSource++) {
+                    int jDest = -1;
+                    for (int jSource = 0; jSource < pointsets.length; jSource++) {
                         Scanner sc = new Scanner(pointsets[jSource]);
-                        while(sc.hasNextFloat()) {
+                        while (sc.hasNextFloat()) {
                             float now = sc.nextFloat();
-                            if(now!=0) {
+                            if (now != 0) {
                                 jDest++;
-                                allPointsInThisPath[jDest]=now;
+                                allPointsInThisPath[jDest] = now;
                                 continue;
                             }
 
 
-
                         }
-                        if(pointsets[jSource].equalsIgnoreCase("z")) {
+                        if (pointsets[jSource].equalsIgnoreCase("z")) {
                             System.out.println("pointset[j] equaledignorecase z");
-                            allPointsInThisPath[jDest+1] = allPointsInThisPath[0];
-                            allPointsInThisPath[jDest+2] = allPointsInThisPath[1];
+                            allPointsInThisPath[jDest + 1] = allPointsInThisPath[0];
+                            allPointsInThisPath[jDest + 2] = allPointsInThisPath[1];
                         }
 
                         System.out.println(pointsets[jSource]);
 
                     }
-                    int end=0;
+                    int end = 0;
 
-                    for(int j=0; j<allPointsInThisPath.length;j++) {
+                    for (int j = 0; j < allPointsInThisPath.length; j++) {
                         if (allPointsInThisPath[j] == 0) {
                             end = j;
                             break;
@@ -72,13 +71,13 @@ public class XMLer {
                     float[] clean = new float[end];
 
                     System.out.println("\nfinal array ");
-                    for(int j=0; j<clean.length;j++) {
-                        clean[j]=allPointsInThisPath[j];
+                    for (int j = 0; j < clean.length; j++) {
+                        clean[j] = allPointsInThisPath[j];
                         System.out.println(clean[j]);
 
                     }
                     System.out.println();
-                    points=clean;
+                    points = clean;
                 }
             }
         } catch (ParserConfigurationException e) {
@@ -90,39 +89,38 @@ public class XMLer {
 
 
         }
-    return points;
+        return points;
     }
 
     float[] pointsFromXMLProcessing(String fileName) {
 
-        float[] CoOrds=null;
+        float[] CoOrds = null;
 
         XML all = Main.instance.loadXML(fileName);
         XML[] paths = all.getChildren("path");
 
-        for(int i=0; i<paths.length; i++) {
+        for (int i = 0; i < paths.length; i++) {
             String thisPath = paths[i].getString("d");
             char[] letters = new char[thisPath.length()];
-            for(int j=0;j<thisPath.length();j++) {
+            for (int j = 0; j < thisPath.length(); j++) {
                 char q = thisPath.charAt(j);
-                if(q!='0' & q!='1' & q!='2' & q!='3' & q!='4' & q!='5' & q!='6' & q!='7' & q!='8' & q!='9' & q!='.') {
-                    letters[j]=' ';
-                }
-                else {
+                if (q != '0' & q != '1' & q != '2' & q != '3' & q != '4' & q != '5' & q != '6' & q != '7' & q != '8' & q != '9' & q != '.') {
+                    letters[j] = ' ';
+                } else {
                     letters[j] = q;
                 }
             }
             String clean = new String(letters);
 
             String[] numbers = clean.split(",");
-            for(int j=0; j<numbers.length; j++) {
+            for (int j = 0; j < numbers.length; j++) {
                 //println(numbers[j]);
                 String[] onePath = numbers[j].split(" ");
                 CoOrds = new float[onePath.length];
 
-                int k=0;
-                int k1=0;
-                while(k<onePath.length) {
+                int k = 0;
+                int k1 = 0;
+                while (k < onePath.length) {
                     float now = 0;
                     try {
                         now = Float.parseFloat(onePath[k]);
@@ -131,15 +129,15 @@ public class XMLer {
                         continue;
                     }
                     //println(now);
-                    if(now==now) {
+                    if (now == now) {
                         CoOrds[k1] = now;
                         k1++;
                     }
                     //println(onePath[k] + "\t\t\t" + float(onePath[k]) + "\t" + float(onePath[k+1]));
                     k++;
                 }
-                for(int l=0;l<CoOrds.length;l+=2) {
-                    System.out.println(CoOrds[l] + ",\t" + CoOrds[l+1]);
+                for (int l = 0; l < CoOrds.length; l += 2) {
+                    System.out.println(CoOrds[l] + ",\t" + CoOrds[l + 1]);
                 }
             }
         }

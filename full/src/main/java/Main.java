@@ -55,15 +55,18 @@ public class Main extends PApplet {
 
     public void draw() {
         background(30,35,40,0);
-        int i = (frameCount/20)%coOrds.length;
+        int i = (frameCount/50)%coOrds.length;
         i/=2;
         i*=2;
-        targetX = coOrds[i];
-        targetY = yCoOrdCenter -200 + coOrds[i+1];
+        println(i);
+        targetX = 50+coOrds[i];
+        targetY = yCoOrdCenter -900 + coOrds[i+1];
 //        targetX=mouseX;
 //        targetY=mouseY;
 //        targetX=xCoOrdCenter+160*sin((float)frameCount/16);
 //        targetY=yCoOrdCenter+180*cos((float)frameCount/19);
+        targetX=-370+2*interPolate(((float)(frameCount%100)/100),coOrds[i%coOrds.length],coOrds[(i+2)%coOrds.length]);
+        targetY=yCoOrdCenter -400 +2*interPolate(((float)(frameCount%100)/100),coOrds[(i+1)%coOrds.length],coOrds[(i+3)%coOrds.length]);
 
         float[] elbows = findElbowPos();
 
@@ -78,6 +81,11 @@ public class Main extends PApplet {
         apparatus();
         drawArms(elbows,-1,1);
         gCursor();
+    }
+
+    private float interPolate(float proportion, float Co1, float Co2) {
+        return Co1+proportion*(Co2-Co1);
+
     }
 
     private float findTheta(float[] elbows, int shoulderNum, int leftRight) {
