@@ -1,4 +1,5 @@
 import processing.core.PApplet;
+import processing.core.PFont;
 
 import java.lang.invoke.MethodHandles;
 
@@ -50,6 +51,7 @@ public class Main extends PApplet {
         o1Y = yCoOrdCenter;
         o2X = xCoOrdCenter+d/2;
         o2Y = xCoOrdCenter;
+        textSize(20);
     }
 
     public void draw() {
@@ -64,11 +66,53 @@ public class Main extends PApplet {
         ////targetX=xCoOrdCenter+160*sin((float)frameCount/16);
         //targetY=yCoOrdCenter+180*cos((float)frameCount/19);
 
+        float[] elbows = findElbowPos();
 
+        float theta1 = findTheta(elbows,1,-1);
+        float theta2 = findTheta(elbows,2,1);
 
+        rect(xCoOrdCenter,20,theta1*150,20);
+        rect(xCoOrdCenter,50,theta2*150,20);
+        fill(100);
+        text("left",80,40);
+        text("right",80,70);
         apparatus();
-        drawArms(findElbowPos(),-1,1);
+        drawArms(elbows,-1,1);
         gCursor();
+    }
+
+    private float findTheta(float[] elbows, int shoulderNum, int leftRight) {
+        float angle;
+        float X1=0,Y1=0,X2=0,Y2=0;
+        if(shoulderNum==1) {
+            X1=o1X;
+            Y1=o1Y;
+            if(leftRight<=0) {
+                X2=elbows[0];
+                Y2=elbows[1];
+            }
+            if(leftRight>0) {
+                X2=elbows[2];
+                Y2=elbows[3];
+            }
+        }
+        else if(shoulderNum==2) {
+            X1=o2X;
+            Y1=o2X;
+            if(leftRight<=0) {
+                X2=elbows[4];
+                Y2=elbows[5];
+            }
+            if(leftRight>0) {
+                X2=elbows[6];
+                Y2=elbows[7];
+            }
+        }
+        else {
+            println("shoulder number must be 1 or 2");
+        }
+        angle=atan2(X1-X2,Y1-Y2);
+        return angle;
     }
 
     private void drawArms(float[] elbowPos, int leftConfig, int rightConfig) {
