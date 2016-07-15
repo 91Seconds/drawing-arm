@@ -79,14 +79,12 @@ public class Main extends PApplet {
 
         //length of the line between the shoulders and the mouse
         float abs1 = sqrt(   pow(o1X-targetX,2)+pow(o1Y-targetY,2)   );
-        println();
         float abs2 = sqrt(   pow(o2X-targetX,2)+pow(o2Y-targetY,2)   );
 
         //radius of a circle centered halfway between the shoulders and the mouse so that the distance
         //between its intersection with the reach of the shoulders and the mouse is equal to l
         float o1R = findRadius(l,abs1);
         float o2R = findRadius(l,abs2); //(pow(((mouseX-o2X)/2),2)-pow(mouseY-o2Y,2)));
-        println("oR1= " + o1R  + "\t abs1 = " + abs1);
 
         //draws that circle
         stroke(80);

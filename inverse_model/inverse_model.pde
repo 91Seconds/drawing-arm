@@ -34,10 +34,10 @@ void draw() {
   int i = (frameCount/20)%coOrds.length;
   i/=2;
   i*=2;
-  targetX = coOrds[i];
-  targetY = coOrds[i+1];
-  //targetX=mouseX;
-  //targetY=mouseY;
+  //targetX = coOrds[i];
+  //targetY = coOrds[i+1];
+  targetX=mouseX;
+  targetY=mouseY;
   ////targetX=xCoOrdCenter+160*sin((float)frameCount/16);
   //targetY=yCoOrdCenter+180*cos((float)frameCount/19);
   
@@ -48,10 +48,10 @@ void draw() {
 
 void arms() {
   //co-ordinates of the center point of a line drawn from the shoulders to the mouse
-  float o1XC = xCoOrdCenter+(targetX-o1X)/2;
-  float o1YC = yCoOrdCenter+(targetY-o1Y)/2;
-  float o2XC = xCoOrdCenter+(targetX-o2X)/2;
-  float o2YC = yCoOrdCenter+(targetY-o2Y)/2;
+  float o1XC = (targetX+o1X)/2;
+  float o1YC = (targetY+o1Y)/2;
+  float o2XC = (targetX+o2X)/2;
+  float o2YC = (targetY+o2Y)/2;
   
   //length of the line btween the shoulders and the mouse
   float abs1 = sqrt(   pow(targetX-o1X,2)+pow(targetY-o1Y,2)   );
@@ -59,8 +59,8 @@ void arms() {
   
   //radius of a circle centered halfway between the shoulders and the mouse so that the distance 
   //between its intersection with the reach of the shoulders and the mouse is equal to l
-  float o2R = sqrt(pow(l,2)-pow(abs1/2,2));
-  float o1R = sqrt(pow(l,2)-pow(abs2/2,2));//(pow(((mouseX-o2X)/2),2)-pow(mouseY-o2Y,2)));
+  float o1R = sqrt(pow(l,2)-pow(abs1/2,2));
+  float o2R = sqrt(pow(l,2)-pow(abs2/2,2));//(pow(((mouseX-o2X)/2),2)-pow(mouseY-o2Y,2)));
   
   //draws that circle
   stroke(80);
@@ -77,15 +77,15 @@ void arms() {
   //uses the length of the line as determined by the radius of the circle
   //and the slope of the line as determined by the inverse reciprocal of the angle
   //to determine the co-ordinates where the normal intersetcs the reach of the ulnar
-  float o1NormalX1 = o2XC + o2R*cos(o1NormalAngle);
-  float o1NormalY1 = o2YC + o2R*sin(o1NormalAngle);
-  float o1NormalX2 = o2XC - o2R*cos(o1NormalAngle);
-  float o1NormalY2 = o2YC - o2R*sin(o1NormalAngle);
+  float o1NormalX1 = o1XC + o1R*cos(o1NormalAngle);
+  float o1NormalY1 = o1YC + o1R*sin(o1NormalAngle);
+  float o1NormalX2 = o1XC - o1R*cos(o1NormalAngle);
+  float o1NormalY2 = o1YC - o1R*sin(o1NormalAngle);
   
-  float o2NormalX1 = o1XC + o1R*cos(o2NormalAngle);
-  float o2NormalY1 = o1YC + o1R*sin(o2NormalAngle);
-  float o2NormalX2 = o1XC - o1R*cos(o2NormalAngle);
-  float o2NormalY2 = o1YC - o1R*sin(o2NormalAngle);
+  float o2NormalX1 = o2XC + o2R*cos(o2NormalAngle);
+  float o2NormalY1 = o2YC + o2R*sin(o2NormalAngle);
+  float o2NormalX2 = o2XC - o2R*cos(o2NormalAngle);
+  float o2NormalY2 = o2YC - o2R*sin(o2NormalAngle);
   
   //draws the normals
   stroke(60);
