@@ -57,10 +57,10 @@ public class Main extends PApplet {
         int i = (frameCount/20)%coOrds.length;
         i/=2;
         i*=2;
-        targetX = coOrds[i];
-        targetY = xCoOrdCenter + coOrds[i+1];
-        //targetX=mouseX;
-        //targetY=mouseY;
+        //targetX = coOrds[i];
+        //targetY = xCoOrdCenter + coOrds[i+1];
+        targetX=mouseX;
+        targetY=mouseY;
         ////targetX=xCoOrdCenter+160*sin((float)frameCount/16);
         //targetY=yCoOrdCenter+180*cos((float)frameCount/19);
 
@@ -70,20 +70,23 @@ public class Main extends PApplet {
     }
 
     void arms() {
+        rect(o1X,o1Y,10,10);
         //co-ordinates of the center point of a line drawn from the shoulders to the mouse
-        float o1XC = xCoOrdCenter+(targetX-o1X)/2;
-        float o1YC = yCoOrdCenter+(targetY-o1Y)/2;
-        float o2XC = xCoOrdCenter+(targetX-o2X)/2;
-        float o2YC = yCoOrdCenter+(targetY-o2Y)/2;
+        float o1XC = (targetX+o1X)/2;
+        float o1YC = (targetY+o1Y)/2;
+        float o2XC = (targetX+o2X)/2;
+        float o2YC = (targetY+o2Y)/2;
 
         //length of the line between the shoulders and the mouse
-        float abs1 = sqrt(   pow(targetX-o1X,2)+pow(targetY-o1Y,2)   );
-        float abs2 = sqrt(   pow(targetX-o2X,2)+pow(targetY-o2Y,2)   );
+        float abs1 = sqrt(   pow(o1X-targetX,2)+pow(o1Y-targetY,2)   );
+        println();
+        float abs2 = sqrt(   pow(o2X-targetX,2)+pow(o2Y-targetY,2)   );
 
         //radius of a circle centered halfway between the shoulders and the mouse so that the distance
         //between its intersection with the reach of the shoulders and the mouse is equal to l
-        float o2R = sqrt(pow(l,2)-pow(abs1/2,2));
-        float o1R = sqrt(pow(l,2)-pow(abs2/2,2));//(pow(((mouseX-o2X)/2),2)-pow(mouseY-o2Y,2)));
+        float o1R = findRadius(l,abs1);
+        float o2R = findRadius(l,abs2); //(pow(((mouseX-o2X)/2),2)-pow(mouseY-o2Y,2)));
+        println("oR1= " + o1R  + "\t abs1 = " + abs1);
 
         //draws that circle
         stroke(80);
@@ -100,15 +103,15 @@ public class Main extends PApplet {
         //uses the length of the line as determined by the radius of the circle
         //and the slope of the line as determined by the inverse reciprocal of the angle
         //to determine the co-ordinates where the normal intersetcs the reach of the ulnar
-        float o1NormalX1 = o2XC + o2R*cos(o1NormalAngle);
-        float o1NormalY1 = o2YC + o2R*sin(o1NormalAngle);
-        float o1NormalX2 = o2XC - o2R*cos(o1NormalAngle);
-        float o1NormalY2 = o2YC - o2R*sin(o1NormalAngle);
+        float o1NormalX1 = o1XC + o1R*cos(o1NormalAngle);
+        float o1NormalY1 = o1YC + o1R*sin(o1NormalAngle);
+        float o1NormalX2 = o1XC - o1R*cos(o1NormalAngle);
+        float o1NormalY2 = o1YC - o1R*sin(o1NormalAngle);
 
-        float o2NormalX1 = o1XC + o1R*cos(o2NormalAngle);
-        float o2NormalY1 = o1YC + o1R*sin(o2NormalAngle);
-        float o2NormalX2 = o1XC - o1R*cos(o2NormalAngle);
-        float o2NormalY2 = o1YC - o1R*sin(o2NormalAngle);
+        float o2NormalX1 = o2XC + o2R*cos(o2NormalAngle);
+        float o2NormalY1 = o2YC + o2R*sin(o2NormalAngle);
+        float o2NormalX2 = o2XC - o2R*cos(o2NormalAngle);
+        float o2NormalY2 = o2YC - o2R*sin(o2NormalAngle);
 
         //draws the normals
         stroke(60);
@@ -144,6 +147,10 @@ public class Main extends PApplet {
         stroke(100);
         line(o1X,o1Y,targetX,targetY);
         line(o2X,o2Y,targetX,targetY);
+    }
+
+    private float findRadius(float l, float length) {
+        return sqrt(pow(l,2)-pow(length/2,2));
     }
 
     //draws the reach of the ulnars pivoting from shoulders and the total working
