@@ -16,8 +16,10 @@ float o2Y;
 float targetX, targetY;
 //not used
 //float h1X, h1Y, h2X, h2Y;
+float[] coOrds;
 
 void setup() {
+  coOrds = pointsFromXML("file.svg");
   size(1000,1000);
   xCoOrdCenter=width/2;
   yCoOrdCenter=height/2;
@@ -29,10 +31,15 @@ void setup() {
 
 void draw() {
   background(30,35,40,0);
+  int i = (frameCount/20)%coOrds.length;
+  i/=2;
+  i*=2;
+  targetX = coOrds[i];
+  targetY = coOrds[i+1];
   //targetX=mouseX;
   //targetY=mouseY;
-  targetX=xCoOrdCenter+160*sin((float)frameCount/16);
-  targetY=yCoOrdCenter+180*cos((float)frameCount/19);
+  ////targetX=xCoOrdCenter+160*sin((float)frameCount/16);
+  //targetY=yCoOrdCenter+180*cos((float)frameCount/19);
   
   apparatus();
   arms();
