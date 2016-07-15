@@ -1,5 +1,4 @@
 import processing.core.PApplet;
-import processing.core.PFont;
 
 import java.lang.invoke.MethodHandles;
 
@@ -59,12 +58,12 @@ public class Main extends PApplet {
         int i = (frameCount/20)%coOrds.length;
         i/=2;
         i*=2;
-        //targetX = coOrds[i];
-        //targetY = xCoOrdCenter + coOrds[i+1];
-        targetX=mouseX;
-        targetY=mouseY;
-        ////targetX=xCoOrdCenter+160*sin((float)frameCount/16);
-        //targetY=yCoOrdCenter+180*cos((float)frameCount/19);
+        targetX = coOrds[i];
+        targetY = yCoOrdCenter -200 + coOrds[i+1];
+//        targetX=mouseX;
+//        targetY=mouseY;
+//        targetX=xCoOrdCenter+160*sin((float)frameCount/16);
+//        targetY=yCoOrdCenter+180*cos((float)frameCount/19);
 
         float[] elbows = findElbowPos();
 
