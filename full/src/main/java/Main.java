@@ -51,11 +51,14 @@ public class Main extends PApplet {
         o2X = xCoOrdCenter+d/2;
         o2Y = xCoOrdCenter;
         textSize(20);
+        background(30,35,40);
     }
 
     public void draw() {
-        background(30,35,40,0);
-        int i = (frameCount/50)%coOrds.length;
+        noStroke();
+        fill(30,35,40);
+        rect(0,0,width,height-100);
+        int i = (frameCount/50)%(coOrds.length-2);
         i/=2;
         i*=2;
         println(i);
@@ -73,11 +76,20 @@ public class Main extends PApplet {
         float theta1 = findTheta(elbows,1,-1);
         float theta2 = findTheta(elbows,2,1);
 
+        fill(200);
         rect(xCoOrdCenter,20,theta1*150,20);
         rect(xCoOrdCenter,50,theta2*150,20);
-        fill(100);
+        stroke(255,0,0);
+        fill(200,0,0);
+        point(((float)(frameCount%600)*width/600),height-50-40*theta1);
         text("left",80,40);
+        stroke(0,255,0);
+        fill(0,200,0);
+        point(((float)(frameCount%600)*width/600),height-50-40*theta2);
         text("right",80,70);
+        fill(30,35,40,1);
+        noStroke();
+        rect(((float)((frameCount-300)%600)*width/600),height-100,550,100);
         apparatus();
         drawArms(elbows,-1,1);
         gCursor();
@@ -211,6 +223,7 @@ public class Main extends PApplet {
     //draws the reach of the ulnars pivoting from shoulders and the total working
     //area as the intersections of two ellipses centered at the shoulders
     void apparatus() {
+        noStroke();
         fill(50,50,60);
         ellipse(o1X,o1Y,2*l,2*l);
         ellipse(o2X,o2Y,2*l,2*l);
