@@ -41,6 +41,8 @@ public class Main extends PApplet {
     public static volatile double kI=0;
     public static volatile double kD=0;
 
+    ArmRobot theArms;
+
     public void settings() {
         size(1000,1000);
     }
@@ -56,6 +58,7 @@ public class Main extends PApplet {
         textSize(20);
         background(30,35,40);
         launchAdjustment();
+        theArms = new ArmRobot(xCoOrdCenter-d/2,yCoOrdCenter,xCoOrdCenter+d/2,yCoOrdCenter);
     }
 
     private void launchAdjustment() {
@@ -69,10 +72,10 @@ public class Main extends PApplet {
         erasePrevFrame();
         setTargets();
 
-        float[] elbows = findElbowPos();
+        float[] elbows = theArms.findElbowPos(targetX,targetY);
 
-        float theta1 = findTheta(elbows,1,-1);
-        float theta2 = findTheta(elbows,2,1);
+        float theta1 = theArms.findTheta(elbows,1,-1);
+        float theta2 = theArms.findTheta(elbows,2,1);
 
         drawAngleVis(theta1, theta2);
         drawAngleGraph(theta1, theta2);
@@ -124,6 +127,8 @@ public class Main extends PApplet {
 //        targetY=yCoOrdCenter+180*cos((float)frameCount/19);
         targetX=-370+2*interPolate(((float)(frameCount%100)/100),coOrds[i%coOrds.length],coOrds[(i+2)%coOrds.length]);
         targetY=yCoOrdCenter -400 +2*interPolate(((float)(frameCount%100)/100),coOrds[(i+1)%coOrds.length],coOrds[(i+3)%coOrds.length]);
+        targetX=mouseX;
+        targetY=mouseY;
     }
 
     private void erasePrevFrame() {
@@ -137,39 +142,6 @@ public class Main extends PApplet {
 
     }
 
-    private float findTheta(float[] elbows, int shoulderNum, int leftRight) {
-        float angle;
-        float X1=0,Y1=0,X2=0,Y2=0;
-        if(shoulderNum==1) {
-            X1=o1X;
-            Y1=o1Y;
-            if(leftRight<=0) {
-                X2=elbows[0];
-                Y2=elbows[1];
-            }
-            if(leftRight>0) {
-                X2=elbows[2];
-                Y2=elbows[3];
-            }
-        }
-        else if(shoulderNum==2) {
-            X1=o2X;
-            Y1=o2X;
-            if(leftRight<=0) {
-                X2=elbows[4];
-                Y2=elbows[5];
-            }
-            if(leftRight>0) {
-                X2=elbows[6];
-                Y2=elbows[7];
-            }
-        }
-        else {
-            println("shoulder number must be 1 or 2");
-        }
-        angle=atan2(X1-X2,Y1-Y2);
-        return angle;
-    }
 
     private void drawArms(float[] elbowPos, int leftConfig, int rightConfig) {
         stroke(0xff,0xff,0xff,0x22);
@@ -209,45 +181,6 @@ public class Main extends PApplet {
 
     }
 
-    float[] findElbowPos() {
-        //co-ordinates of the center point of a line drawn from the shoulders to the mouse
-        float o1XC = (targetX+o1X)/2;
-        float o1YC = (targetY+o1Y)/2;
-        float o2XC = (targetX+o2X)/2;
-        float o2YC = (targetY+o2Y)/2;
-
-        //length of the line between the shoulders and the mouse
-        float abs1 = absLength(o1X,targetX,o1Y,targetY);
-        float abs2 = absLength(o2X,targetX,o2Y,targetY);
-
-        //radius of a circle centered halfway between the shoulders and the mouse so that the distance
-        //between its intersection with the reach of the shoulders and the mouse is equal to l
-        float o1R = findOp(l,abs1/2);
-        float o2R = findOp(l,abs2/2);
-
-        //finds the angle of the line from the shoulders to the mouse
-        //and the inverse reciprocal
-        float o1Angle = atan2((targetY-o1Y),(targetX-o1X));
-        float o1NormalAngle =atan2(-(targetX-o1X),(targetY-o1Y));
-        float o2Angle = atan2((targetY-o2Y),(targetX-o2X));
-        float o2NormalAngle =atan2(-(targetX-o2X),(targetY-o2Y));
-
-        //uses the length of the line as determined by the radius of the circle
-        //and the slope of the line as determined by the inverse reciprocal of the angle
-        //to determine the co-ordinates where the normal intersetcs the reach of the ulnar
-        float o1NormalX1 = o1XC + o1R*cos(o1NormalAngle);
-        float o1NormalY1 = o1YC + o1R*sin(o1NormalAngle);
-        float o1NormalX2 = o1XC - o1R*cos(o1NormalAngle);
-        float o1NormalY2 = o1YC - o1R*sin(o1NormalAngle);
-
-        float o2NormalX1 = o2XC + o2R*cos(o2NormalAngle);
-        float o2NormalY1 = o2YC + o2R*sin(o2NormalAngle);
-        float o2NormalX2 = o2XC - o2R*cos(o2NormalAngle);
-        float o2NormalY2 = o2YC - o2R*sin(o2NormalAngle);
-
-        float[] points = {o1NormalX1,o1NormalY1,o1NormalX2,o1NormalY2,o2NormalX1,o2NormalY1,o2NormalX2,o2NormalY2};
-        return points;
-    }
 
     private float absLength(float X1, float X2, float Y1, float Y2) {
         return sqrt(   pow(X1-X2,2)+pow(Y1-Y2,2)   );

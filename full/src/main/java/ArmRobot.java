@@ -31,7 +31,7 @@ public class ArmRobot {
         d=seperation;
     }
 
-    private float findTheta(float[] elbows, int shoulderNum, int leftRight) {
+    public float findTheta(float[] elbows, int shoulderNum, int leftRight) {
         float angle;
         float X1=0,Y1=0,X2=0,Y2=0;
         if(shoulderNum==1) {
