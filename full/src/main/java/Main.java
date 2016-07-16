@@ -171,7 +171,7 @@ public class Main extends PApplet {
     }
 
     private void setTargets() {
-        int i = (frameCount/50)%(coOrds.length-2);
+        int i = (frameCount/50)%(coOrds.length);
         i/=2;
         i*=2;
 //        println(i);
@@ -181,8 +181,8 @@ public class Main extends PApplet {
 //        targetY=mouseY;
 //        targetX=xCoOrdCenter+160*sin((float)frameCount/16);
 //        targetY=yCoOrdCenter+180*cos((float)frameCount/19);
-        targetX=-370+2*interPolate(((float)(frameCount%100)/100),coOrds[i%coOrds.length],coOrds[(i+2)%coOrds.length]);
-        targetY=yCoOrdCenter -400 +2*interPolate(((float)(frameCount%100)/100),coOrds[(i+1)%coOrds.length],coOrds[(i+3)%coOrds.length]);
+        targetX=xCoOrdCenter+2*interPolate(((float)(frameCount%100)/100),coOrds[i%coOrds.length],coOrds[(i+2)%coOrds.length]);
+        targetY=yCoOrdCenter-150+2*interPolate(((float)(frameCount%100)/100),coOrds[(i+1)%coOrds.length],coOrds[(i+3)%coOrds.length]);
 //        targetX=mouseX;
 //        targetY=mouseY;
     }
