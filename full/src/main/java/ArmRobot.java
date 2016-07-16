@@ -31,6 +31,40 @@ public class ArmRobot {
         d=seperation;
     }
 
+    private float findTheta(float[] elbows, int shoulderNum, int leftRight) {
+        float angle;
+        float X1=0,Y1=0,X2=0,Y2=0;
+        if(shoulderNum==1) {
+            X1=o1X;
+            Y1=o1Y;
+            if(leftRight<=0) {
+                X2=elbows[0];
+                Y2=elbows[1];
+            }
+            if(leftRight>0) {
+                X2=elbows[2];
+                Y2=elbows[3];
+            }
+        }
+        else if(shoulderNum==2) {
+            X1=o2X;
+            Y1=o2X;
+            if(leftRight<=0) {
+                X2=elbows[4];
+                Y2=elbows[5];
+            }
+            if(leftRight>0) {
+                X2=elbows[6];
+                Y2=elbows[7];
+            }
+        }
+        else {
+            System.out.println("shoulder number must be 1 or 2");
+        }
+        angle=(float)Math.atan2(X1-X2,Y1-Y2);
+        return angle;
+    }
+
     float[] findElbowPos(float targetX, float targetY) {
         //co-ordinates of the center point of a line drawn from the shoulders to the mouse
         float o1XC = (targetX+o1X)/2;
@@ -68,6 +102,36 @@ public class ArmRobot {
         float o2NormalY2 = o2YC - o2R*(float)Math.sin(o2NormalAngle);
 
         float[] points = {o1NormalX1,o1NormalY1,o1NormalX2,o1NormalY2,o2NormalX1,o2NormalY1,o2NormalX2,o2NormalY2};
+        return points;
+    }
+
+    float[] findTCPPos(float theta1, float theta2) {
+
+        //e is for elbow, 1 is for left, 2 is for right
+        float e1X, e1Y, e2X, e2Y;
+        e1X=(float)Math.cos((float)theta1);
+        e1Y=(float)Math.sin((float)theta1);
+        e2X=(float)Math.cos((float)theta2);
+        e2Y=(float)Math.sin((float)theta2);
+
+        //elbow center x, elbow center y; the half way point between the elbows
+        float eCX = (e1X+e2X)/2;
+        float eCY = (e1Y+e2Y)/2;
+
+        float tcpRad = findOp(l,absLength(e1X,e2X,e1Y,e2Y));
+
+        //angle of a line passing through both elbows
+        float elbowLineAngle = (float)Math.atan2(e1Y-e2Y,e1X-e2X);
+        //inverse reciprocal of that line's angle
+        float invRepElbowLineAngle = (float)Math.atan2(e1X-e2X,-(e1Y-e2Y));
+
+        float[] points = new float[4];
+
+        points[0] = eCX + tcpRad*(float)Math.cos(invRepElbowLineAngle);
+        points[1] = eCY + tcpRad*(float)Math.cos(invRepElbowLineAngle);
+        points[2] = eCX - tcpRad*(float)Math.cos(invRepElbowLineAngle);
+        points[3] = eCY - tcpRad*(float)Math.cos(invRepElbowLineAngle);
+
         return points;
     }
 

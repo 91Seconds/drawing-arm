@@ -1,7 +1,8 @@
 /**
  * Created by surface on 16/07/2016.
  */
-public class ArmFromAngle {
+
+@Deprecated public class ArmFromAngle {
     private double shoulderX,shoulderY,elbowX,elbowY,radius;
 
     public ArmFromAngle(double shoulderX,double shoulderY, double radius) {
