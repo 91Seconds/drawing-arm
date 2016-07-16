@@ -50,7 +50,7 @@ public class Main extends PApplet {
 
 
     public void settings() {
-        size(2000,1000);
+        size(2000,1200);
     }
 
     public void setup() {
@@ -62,9 +62,9 @@ public class Main extends PApplet {
         o2X = xCoOrdCenter+d/2;
         o2Y = yCoOrdCenter;
         q1X = 3*width/4-d/2;
-        q1Y = yCoOrdCenter;
+        q1Y = yCoOrdCenter-100;
         q2X = 3*width/4+d/2;
-        q2Y = yCoOrdCenter;
+        q2Y = yCoOrdCenter-100;
 
         textSize(20);
         background(30,35,40);
@@ -128,11 +128,17 @@ public class Main extends PApplet {
         ellipse(e1X,e1Y,2*l,2*l);
         ellipse(e2X,e2Y,2*l,2*l);
 
-
-        fill(255);
+        noStroke();
+        fill(200);
         ellipse(tCPs[0],tCPs[1],10,10);
-        fill(2550,0,0);
+        fill(255,0,0);
         ellipse(tCPs[2],tCPs[3],10,10);
+
+
+        fill(200);
+        ellipse(tCPs[0],tCPs[1]+height/2-100,10,10);
+        fill(255,0,0);
+        ellipse(tCPs[2],tCPs[3]+height/2-100,10,10);
     }
 
     private void drawPIDDisplay() {
@@ -184,7 +190,10 @@ public class Main extends PApplet {
     private void erasePrevFrame() {
         noStroke();
         fill(30,35,40);
-        rect(0,0,width,height-150);
+        rect(0,0,width/2,height-200);
+        rect(0,0,width,height/2);
+        fill(30,35,40,1);
+        rect(0,height/2,width,height/2-200);
     }
 
     private float interPolate(float proportion, float Co1, float Co2) {
