@@ -48,10 +48,11 @@ public class ArmRobot {
         }
         else if(shoulderNum==2) {
             X1=o2X;
-            Y1=o2X;
+            Y1=o2Y;
             if(leftRight<=0) {
                 X2=elbows[4];
                 Y2=elbows[5];
+                //System.out.println("X1= " + X1 + ", Y1= " + Y1 + ", X2= " + X2 + ", Y2= " + Y2);
             }
             if(leftRight>0) {
                 X2=elbows[6];
@@ -61,7 +62,7 @@ public class ArmRobot {
         else {
             System.out.println("shoulder number must be 1 or 2");
         }
-        angle=(float)Math.atan2(X1-X2,Y1-Y2);
+        angle=(float)Math.atan2(Y1-Y2,-X1+X2);
         return angle;
     }
 

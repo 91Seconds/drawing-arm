@@ -44,7 +44,7 @@ public class Main extends PApplet {
     ArmRobot theArms;
 
     public void settings() {
-        size(1000,1000);
+        size(2000,1000);
     }
 
     public void setup() {
@@ -54,11 +54,11 @@ public class Main extends PApplet {
         o1X = xCoOrdCenter-d/2;
         o1Y = yCoOrdCenter;
         o2X = xCoOrdCenter+d/2;
-        o2Y = xCoOrdCenter;
+        o2Y = yCoOrdCenter;
         textSize(20);
         background(30,35,40);
         launchAdjustment();
-        theArms = new ArmRobot(xCoOrdCenter-d/2,yCoOrdCenter,xCoOrdCenter+d/2,yCoOrdCenter);
+        theArms = new ArmRobot(o1X,o1Y,o2X,o2Y);
     }
 
     private void launchAdjustment() {
