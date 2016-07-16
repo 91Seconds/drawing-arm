@@ -110,16 +110,16 @@ public class ArmRobot {
 
         //e is for elbow, 1 is for left, 2 is for right
         float e1X, e1Y, e2X, e2Y;
-        e1X=(float)Math.cos((float)theta1);
-        e1Y=(float)Math.sin((float)theta1);
-        e2X=(float)Math.cos((float)theta2);
-        e2Y=(float)Math.sin((float)theta2);
+        e1X=o1X+l*(float)Math.cos((float)theta1);
+        e1Y=o1Y-l*(float)Math.sin((float)theta1);
+        e2X=o2X+l*(float)Math.cos((float)theta2);
+        e2Y=o2Y-l*(float)Math.sin((float)theta2);
 
         //elbow center x, elbow center y; the half way point between the elbows
         float eCX = (e1X+e2X)/2;
         float eCY = (e1Y+e2Y)/2;
 
-        float tcpRad = findOp(l,absLength(e1X,e2X,e1Y,e2Y));
+        float tcpRad = findOp(l,absLength(e1X,e2X,e1Y,e2Y)/2);
 
         //angle of a line passing through both elbows
         float elbowLineAngle = (float)Math.atan2(e1Y-e2Y,e1X-e2X);
@@ -129,9 +129,9 @@ public class ArmRobot {
         float[] points = new float[4];
 
         points[0] = eCX + tcpRad*(float)Math.cos(invRepElbowLineAngle);
-        points[1] = eCY + tcpRad*(float)Math.cos(invRepElbowLineAngle);
+        points[1] = eCY + tcpRad*(float)Math.sin(invRepElbowLineAngle);
         points[2] = eCX - tcpRad*(float)Math.cos(invRepElbowLineAngle);
-        points[3] = eCY - tcpRad*(float)Math.cos(invRepElbowLineAngle);
+        points[3] = eCY - tcpRad*(float)Math.sin(invRepElbowLineAngle);
 
         return points;
     }

@@ -32,6 +32,11 @@ public class Main extends PApplet {
     float o2X;
     float o2Y;
 
+    float q1X;
+    float q1Y;
+    float q2X;
+    float q2Y;
+
     float targetX, targetY;
     //not used
     //float h1X, h1Y, h2X, h2Y;
@@ -41,7 +46,8 @@ public class Main extends PApplet {
     public static volatile double kI=0;
     public static volatile double kD=0;
 
-    ArmRobot theArms;
+    ArmRobot theArms, theOtherArms;
+
 
     public void settings() {
         size(2000,1000);
@@ -49,16 +55,22 @@ public class Main extends PApplet {
 
     public void setup() {
         coOrds = new XMLer().pointsFromXML("file.svg");
-        xCoOrdCenter=width/2;
+        xCoOrdCenter=width/4;
         yCoOrdCenter=height/2;
         o1X = xCoOrdCenter-d/2;
         o1Y = yCoOrdCenter;
         o2X = xCoOrdCenter+d/2;
         o2Y = yCoOrdCenter;
+        q1X = 3*width/4-d/2;
+        q1Y = yCoOrdCenter;
+        q2X = 3*width/4+d/2;
+        q2Y = yCoOrdCenter;
+
         textSize(20);
         background(30,35,40);
         launchAdjustment();
         theArms = new ArmRobot(o1X,o1Y,o2X,o2Y);
+        theOtherArms = new ArmRobot(q1X,q1Y,q2X,q2Y);
     }
 
     private void launchAdjustment() {
@@ -83,6 +95,43 @@ public class Main extends PApplet {
         drawArms(elbows,-1,1);
         gCursor();
         drawPIDDisplay();
+
+        drawOtherArms(theta1, theta2);
+    }
+
+    private void drawOtherArms(float theta1, float theta2) {
+        fill(150,150,150,150);
+        float e1X = q1X+l*cos(theta1);
+        float e1Y = q1Y-l*sin(theta1);
+        float e2X = q2X+l*cos(theta2);
+        float e2Y = q2Y-l*sin(theta2);
+        //shoulders
+        ellipse(q1X,q1Y,10,10);
+        ellipse(q2X,q2Y,10,10);
+        //elbows
+        ellipse(e1X,e1Y,10,10);
+        ellipse(e2X,e2Y,10,10);
+        stroke(200,200,200,150);
+        line(q1X,q1Y,e1X,e1Y);
+        line(q2X,q2Y,e2X,e2Y);
+
+        float[] tCPs = theOtherArms.findTCPPos(theta1,theta2);
+        line(tCPs[0],tCPs[1],tCPs[2],tCPs[3]);
+        line(e1X,e1Y,tCPs[0],tCPs[1]);
+        line(e1X,e1Y,tCPs[2],tCPs[3]);
+        line(e2X,e2Y,tCPs[0],tCPs[1]);
+        line(e2X,e2Y,tCPs[2],tCPs[3]);
+
+        noFill();
+        ellipse((e1X+e2X)/2,(e1Y+e2Y)/2,absLength(e1X,e2X,e1Y,e2Y),absLength(e1X,e2X,e1Y,e2Y));
+        ellipse((e1X+e2X)/2,(e1Y+e2Y)/2,absLength(tCPs[0],tCPs[2],tCPs[1],tCPs[3]),absLength(tCPs[0],tCPs[2],tCPs[1],tCPs[3]));
+        ellipse(e1X,e1Y,2*l,2*l);
+        ellipse(e2X,e2Y,2*l,2*l);
+
+
+        fill(255);
+        ellipse(tCPs[0],tCPs[1],10,10);
+        ellipse(tCPs[2],tCPs[3],10,10);
     }
 
     private void drawPIDDisplay() {
@@ -96,11 +145,11 @@ public class Main extends PApplet {
     private void drawAngleGraph(float theta1, float theta2) {
         stroke(255,0,0);
         fill(200,0,0);
-        point(((float)(frameCount%600)*width/600),height-50-40*theta1);
+        point(((float)(frameCount%600)*width/600),height-40*theta1);
         text("left",80,40);
         stroke(0,255,0);
         fill(0,200,0);
-        point(((float)(frameCount%600)*width/600),height-50-40*theta2);
+        point(((float)(frameCount%600)*width/600),height-40*theta2);
         text("right",80,70);
         fill(30,35,40,1);
         noStroke();
@@ -127,8 +176,8 @@ public class Main extends PApplet {
 //        targetY=yCoOrdCenter+180*cos((float)frameCount/19);
         targetX=-370+2*interPolate(((float)(frameCount%100)/100),coOrds[i%coOrds.length],coOrds[(i+2)%coOrds.length]);
         targetY=yCoOrdCenter -400 +2*interPolate(((float)(frameCount%100)/100),coOrds[(i+1)%coOrds.length],coOrds[(i+3)%coOrds.length]);
-        targetX=mouseX;
-        targetY=mouseY;
+//        targetX=mouseX;
+//        targetY=mouseY;
     }
 
     private void erasePrevFrame() {
