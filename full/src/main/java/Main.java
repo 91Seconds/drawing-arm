@@ -131,6 +131,7 @@ public class Main extends PApplet {
 
         fill(255);
         ellipse(tCPs[0],tCPs[1],10,10);
+        fill(2550,0,0);
         ellipse(tCPs[2],tCPs[3],10,10);
     }
 
@@ -151,9 +152,9 @@ public class Main extends PApplet {
         fill(0,200,0);
         point(((float)(frameCount%600)*width/600),height-40*theta2);
         text("right",80,70);
-        fill(30,35,40,1);
+        fill(30,35,40,3);
         noStroke();
-        rect(((float)((frameCount-300)%600)*width/600),height-100,550,100);
+        rect(((float)((frameCount-20)%600)*width/600),height-150,200,150);
     }
 
     private void drawAngleVis(float theta1, float theta2) {
@@ -183,7 +184,7 @@ public class Main extends PApplet {
     private void erasePrevFrame() {
         noStroke();
         fill(30,35,40);
-        rect(0,0,width,height-100);
+        rect(0,0,width,height-150);
     }
 
     private float interPolate(float proportion, float Co1, float Co2) {
