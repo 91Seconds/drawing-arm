@@ -3,17 +3,19 @@
  */
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class PIDAdjuster extends Application implements Runnable {
 
-    HBox root;
+    Pane root;
 
     public static void main(String[] args) {
         launch(args);
@@ -21,24 +23,62 @@ public class PIDAdjuster extends Application implements Runnable {
 
     @Override
     public void start(Stage primaryStage) {
-        root = new HBox();
-
-        setUPSliders();
+        root = new GridPane();
+        GridPane g=(GridPane)root;
+        g.setAlignment(Pos.CENTER);
+        //root.getChildren().add(g);
+        g.setPadding(new Insets(10,10,10,10));
+        g.setVgap(10);
+        g.setHgap(10);
+        setUpSliders(g);
+        setUpText(g);
 
         Scene theScene = new Scene(root,400,400);
         primaryStage.setScene(theScene);
+        primaryStage.setTitle("Adjustments");
         primaryStage.show();
 
     }
 
-    private void setUPSliders() {
-        Slider pSlider = new Slider();
-        Slider iSlider = new Slider();
-        Slider dSlider = new Slider();
-        pSlider.setOrientation(Orientation.VERTICAL);
-        iSlider.setOrientation(Orientation.VERTICAL);
-        dSlider.setOrientation(Orientation.VERTICAL);
-        root.getChildren().addAll(pSlider,iSlider,dSlider);
+    private void setUpSliders(GridPane g) {
+        Slider p = new Slider();
+        Slider i = new Slider();
+        Slider d = new Slider();
+        configureSliders(p);
+        configureSliders(i);
+        configureSliders(d);
+        g.add(p,0,0);
+        g.add(i,1,0);
+        g.add(d,2,0);
+        p.setOnMouseReleased(e-> {
+            Main.kP=p.getValue();
+        });
+        i.setOnMouseReleased(e-> {
+            Main.kI=i.getValue();
+        });
+        d.setOnMouseReleased(e-> {
+            Main.kD=d.getValue();
+        });
+    }
+
+    private void setUpText(GridPane g) {
+        Text kp = new Text("kP");
+        Text ki = new Text("kI");
+        Text kd = new Text("kD");
+        g.add(kp,0,1);
+        g.add(ki,1,1);
+        g.add(kd,2,1);
+    }
+
+    private void configureSliders(Slider sl) {
+        sl.setOrientation(Orientation.VERTICAL);
+        sl.setMin(-10);
+        sl.setMax(10);
+        sl.setMinorTickCount(10);
+        sl.setMajorTickUnit(1);
+        sl.setShowTickLabels(true);
+        sl.setShowTickMarks(true);
+        sl.setPrefHeight(600);
     }
 
     @Override

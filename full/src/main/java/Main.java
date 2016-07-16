@@ -37,6 +37,9 @@ public class Main extends PApplet {
     //float h1X, h1Y, h2X, h2Y;
 
     float[] coOrds;
+    public static volatile double kP=0;
+    public static volatile double kI=0;
+    public static volatile double kD=0;
 
     public void settings() {
         size(1000,1000);
@@ -76,6 +79,15 @@ public class Main extends PApplet {
         drawRanges();
         drawArms(elbows,-1,1);
         gCursor();
+        drawPIDDisplay();
+    }
+
+    private void drawPIDDisplay() {
+        fill(200,200,200,100);
+        noStroke();
+        rect(50,500,10,-20*(float)kP);
+        rect(100,500,10,-20*(float)kI);
+        rect(150,500,10,-20*(float)kD);
     }
 
     private void drawAngleGraph(float theta1, float theta2) {
@@ -103,7 +115,7 @@ public class Main extends PApplet {
         int i = (frameCount/50)%(coOrds.length-2);
         i/=2;
         i*=2;
-        println(i);
+//        println(i);
         targetX = 50+coOrds[i];
         targetY = yCoOrdCenter -900 + coOrds[i+1];
 //        targetX=mouseX;
