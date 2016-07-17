@@ -54,6 +54,7 @@ public class Main extends PApplet {
     }
 
     public void setup() {
+        XMLer.pointsFromSVG("file.svg");
         coOrds = new XMLer().pointsFromXML("file.svg");
         xCoOrdCenter=width/4;
         yCoOrdCenter=height/2;

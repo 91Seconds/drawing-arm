@@ -4,11 +4,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.batik.dom.svg.SVGOMElement;
-import org.apache.batik.dom.svg.SVGOMGElement;
+import org.apache.batik.dom.svg.*;
+import org.apache.batik.util.XMLResourceDescriptor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.svg.SVGPoint;
 import org.xml.sax.SAXException;
 import processing.data.XML;
 
@@ -21,17 +22,35 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import org.apache.batik.dom.svg.SVGOMPoint;
-
 /**
  * Created by surface on 15/07/2016.
  */
 public class XMLer {
 
-    float[] pointsFromSVG(String fileName) {
-        SVGOMGElement theElement;
+    public static SVGPoint[] pointsFromSVG(String fileName) {
+
+        SVGOMPathElement theElement;
         //theElement.
-        return null;
+
+        Document doc = null;
+        try {
+            String parser = XMLResourceDescriptor.getXMLParserClassName();
+            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+            String uri = "file.svg";
+            doc = f.createDocument("file.svg");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.out.println("your'e farrrked");
+            return null;
+        }
+        theElement = (SVGOMPathElement)(doc.getElementById("path"));
+        SVGPoint[] points = new SVGPoint[(int)(theElement.getTotalLength())];
+        for(int i=0; i<theElement.getTotalLength(); i++) {
+            points[i] = theElement.getPointAtLength(((float)(i)));
+            System.out.println(points[i].getX() + ", " + points[1].getY());
+        }
+
+        return points;
     }
 
     @Deprecated float[] pointsFromXML(String fileName) {
@@ -46,7 +65,7 @@ public class XMLer {
                 if (p.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                     Element path = (Element) p;
                     String d = path.getAttribute("d");
-                    System.out.println(d);
+//                    System.out.println(d);
                     String[] pointsets = d.split("[^\\d|.|z\\-\\.]");
                     float[] allPointsInThisPath = new float[pointsets.length];
                     int jDest = -1;
@@ -63,12 +82,12 @@ public class XMLer {
 
                         }
                         if (pointsets[jSource].equalsIgnoreCase("z")) {
-                            System.out.println("pointset[j] equaledignorecase z");
+//                            System.out.println("pointset[j] equaledignorecase z");
                             allPointsInThisPath[jDest + 1] = allPointsInThisPath[0];
                             allPointsInThisPath[jDest + 2] = allPointsInThisPath[1];
                         }
 
-                        System.out.println(pointsets[jSource]);
+//                        System.out.println(pointsets[jSource]);
 
                     }
                     int end = 0;
@@ -81,13 +100,13 @@ public class XMLer {
                     }
                     float[] clean = new float[end];
 
-                    System.out.println("\nfinal array ");
+//                    System.out.println("\nfinal array ");
                     for (int j = 0; j < clean.length; j++) {
                         clean[j] = allPointsInThisPath[j];
-                        System.out.println(clean[j]);
+//                        System.out.println(clean[j]);
 
                     }
-                    System.out.println();
+//                    System.out.println();
                     points = clean;
                 }
             }
