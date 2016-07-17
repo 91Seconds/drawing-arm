@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.batik.dom.svg.SVGOMElement;
+import org.apache.batik.dom.svg.SVGOMGElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -19,11 +21,20 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import org.apache.batik.dom.svg.SVGOMPoint;
+
 /**
  * Created by surface on 15/07/2016.
  */
 public class XMLer {
-    float[] pointsFromXML(String fileName) {
+
+    float[] pointsFromSVG(String fileName) {
+        SVGOMGElement theElement;
+        //theElement.
+        return null;
+    }
+
+    @Deprecated float[] pointsFromXML(String fileName) {
         float[] points = null;
         File opened = new File(fileName);
         try {
