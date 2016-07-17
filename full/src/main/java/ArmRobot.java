@@ -1,3 +1,5 @@
+import org.apache.batik.dom.svg.SVGOMPoint;
+
 /**
  * Created by surface on 16/07/2016.
  */
@@ -64,6 +66,10 @@ public class ArmRobot {
         }
         angle=(float)Math.atan2(Y1-Y2,-X1+X2);
         return angle;
+    }
+
+    float[] findElbowPos(SVGOMPoint targetPoint) {
+        return  findElbowPos(targetPoint.getX(), targetPoint.getY());
     }
 
     float[] findElbowPos(float targetX, float targetY) {
