@@ -153,15 +153,15 @@ public class Main extends PApplet {
     private void drawAngleGraph(float theta1, float theta2) {
         stroke(255,0,0);
         fill(200,0,0);
-        point(((float)(frameCount%600)*width/600),height-40*theta1);
+        point(((float)(frameCount%700)*width/700),height-40*theta1);
         text("left",80,40);
         stroke(0,255,0);
         fill(0,200,0);
-        point(((float)(frameCount%600)*width/600),height-40*theta2);
+        point(((float)(frameCount%700)*width/700),height-40*theta2);
         text("right",80,70);
         fill(30,35,40,3);
         noStroke();
-        rect(((float)((frameCount-20)%600)*width/600),height-150,200,150);
+        rect(((float)((frameCount-20)%700)*width/700),height-150,200,150);
     }
 
     private void drawAngleVis(float theta1, float theta2) {
@@ -182,8 +182,8 @@ public class Main extends PApplet {
 //        targetY=mouseY;
 //        targetX=xCoOrdCenter+160*sin((float)frameCount/16);
 //        targetY=yCoOrdCenter+180*cos((float)frameCount/19);
-        targetX=xCoOrdCenter+2*interPolate(((float)(frameCount%100)/100),coOrds[i%coOrds.length],coOrds[(i+2)%coOrds.length]);
-        targetY=yCoOrdCenter-150+2*interPolate(((float)(frameCount%100)/100),coOrds[(i+1)%coOrds.length],coOrds[(i+3)%coOrds.length]);
+        targetX=-370+2*interPolate(((float)(frameCount%100)/100),coOrds[i%coOrds.length],coOrds[(i+2)%coOrds.length]);
+        targetY=yCoOrdCenter-400+2*interPolate(((float)(frameCount%100)/100),coOrds[(i+1)%coOrds.length],coOrds[(i+3)%coOrds.length]);
 //        targetX=mouseX;
 //        targetY=mouseY;
     }
