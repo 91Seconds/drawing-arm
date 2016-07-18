@@ -1,0 +1,2 @@
+arm1: arm1.cpp
+	gcc -L/usr/lib -Wall -o arm1 arm1.cpp -lE101 -lrt -lm

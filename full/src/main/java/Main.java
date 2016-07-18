@@ -54,7 +54,7 @@ public class Main extends PApplet {
     }
 
     public void setup() {
-        XMLer.pointsFromSVG("file.svg");
+        //XMLer.pointsFromSVG("file.svg");
         coOrds = new XMLer().pointsFromXML("file.svg");
         xCoOrdCenter=width/4;
         yCoOrdCenter=height/2;
@@ -172,20 +172,23 @@ public class Main extends PApplet {
     }
 
     private void setTargets() {
-        int i = (frameCount/50)%(coOrds.length);
-        i/=2;
-        i*=2;
-//        println(i);
-        targetX = 50+coOrds[i];
-        targetY = yCoOrdCenter -900 + coOrds[i+1];
+//        int i = (frameCount/50)%(coOrds.length);
+//        i/=2;
+//        i*=2;
+////        println(i);
+//        targetX = 50+coOrds[i];
+//        targetY = yCoOrdCenter -900 + coOrds[i+1];
+////        targetX=mouseX;
+////        targetY=mouseY;
+////        targetX=xCoOrdCenter+160*sin((float)frameCount/16);
+////        targetY=yCoOrdCenter+180*cos((float)frameCount/19);
+//        targetX=-370+2*interPolate(((float)(frameCount%100)/100),coOrds[i%coOrds.length],coOrds[(i+2)%coOrds.length]);
+//        targetY=yCoOrdCenter-400+2*interPolate(((float)(frameCount%100)/100),coOrds[(i+1)%coOrds.length],coOrds[(i+3)%coOrds.length]);
 //        targetX=mouseX;
 //        targetY=mouseY;
-//        targetX=xCoOrdCenter+160*sin((float)frameCount/16);
-//        targetY=yCoOrdCenter+180*cos((float)frameCount/19);
-        targetX=-370+2*interPolate(((float)(frameCount%100)/100),coOrds[i%coOrds.length],coOrds[(i+2)%coOrds.length]);
-        targetY=yCoOrdCenter-400+2*interPolate(((float)(frameCount%100)/100),coOrds[(i+1)%coOrds.length],coOrds[(i+3)%coOrds.length]);
-//        targetX=mouseX;
-//        targetY=mouseY;
+
+        targetX=interPolate(((float)frameCount%100)/100,o1X,o2X);
+        targetY=interPolate(((float)frameCount%100)/100,o1X,o2X);
     }
 
     private void erasePrevFrame() {

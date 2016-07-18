@@ -4,11 +4,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.batik.dom.AbstractParentNode;
 import org.apache.batik.dom.svg.*;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.svg.SVGMPathElement;
 import org.w3c.dom.svg.SVGPoint;
 import org.xml.sax.SAXException;
 import processing.data.XML;
@@ -19,6 +22,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -27,31 +32,37 @@ import java.util.Scanner;
  */
 public class XMLer {
 
-    public static SVGPoint[] pointsFromSVG(String fileName) {
-
-        SVGOMPathElement theElement;
-        //theElement.
-
-        Document doc = null;
-        try {
-            String parser = XMLResourceDescriptor.getXMLParserClassName();
-            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
-            String uri = "file.svg";
-            doc = f.createDocument("file.svg");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.out.println("your'e farrrked");
-            return null;
-        }
-        theElement = (SVGOMPathElement)(doc.getElementById("path"));
-        SVGPoint[] points = new SVGPoint[(int)(theElement.getTotalLength())];
-        for(int i=0; i<theElement.getTotalLength(); i++) {
-            points[i] = theElement.getPointAtLength(((float)(i)));
-            System.out.println(points[i].getX() + ", " + points[1].getY());
-        }
-
-        return points;
-    }
+//    public static SVGPoint[] pointsFromSVG(String fileName) {
+//
+//        SVGOMPathElement theElement;
+//        //theElement.
+//
+//        Document doc = null;
+//        try {
+//            String parser = XMLResourceDescriptor.getXMLParserClassName();
+//            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+//            URI file = new File("file.svg").toURI();
+//            System.out.println("uri creation happened");
+//            String uri = file.toString();
+//            doc = f.createDocument(uri);
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//            System.out.println("your'e farrrked");
+//            return null;
+//        }
+//        NodeList h = (doc.getElementsByTagName("path"));
+//        System.out.println(h.item(0));
+//        SVGOMPathElement thePath = (SVGOMPathElement)h.item(0);
+//        //System.out.println(thePath.getPathLength());
+//        SVGPoint[] points = new SVGPoint[1000];
+//        for(int i=0; i<1000; i++) {
+//            System.out.println(thePath.getPointAtLength(i));
+//            points[i] = thePath.getPointAtLength(((float)(i)));
+//            System.out.println(points[i].getX() + ", " + points[1].getY());
+//        }
+//
+//        return null;//points;
+//    }
 
     @Deprecated float[] pointsFromXML(String fileName) {
         float[] points = null;
